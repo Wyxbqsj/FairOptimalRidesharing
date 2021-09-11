@@ -6,7 +6,7 @@ import os
 import pickle
 np.random.seed(seed)
 # drc2
-
+# gai yi dian
 class ProblemInstance:
     def __init__(self, orderPath, driverCount):
         # load orders
