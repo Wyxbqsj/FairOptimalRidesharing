@@ -17,7 +17,7 @@ def execute(prefs, recursion_limit=10000):
 	# PHASE 1
 	for passenger in Passenger.ppl.values():
 		if len(passenger.current_prefs) > 0:
-			passenger.propose_to(passenger.current_prefs[0])  # propose to your top choice
+			passenger.propose(passenger.current_prefs[0])  # propose to your top choice
 
 
 	# PHASE 2
@@ -37,18 +37,18 @@ def execute(prefs, recursion_limit=10000):
 
 	return Passenger.prefsMatrix('current')
 
-if __name__ == '__main__':
-	from datadeal.problem import ProblemInstance
-	problemInstance = ProblemInstance(data_path, 1000)
-	currentTime = problemInstance.startTime+60
-	orders, drivers = problemInstance.batch(currentTime)
-	T = cost_saving(orders)
-	prefs = {}
-	for i in T.keys():
-		li = []
-		for j in T[i]:
-			prefs.setdefault(i,li).append(j.match_id)
-
-	# execute the match!!
-	A = execute(prefs)
+# if __name__ == '__main__':
+# 	from datadeal.problem import ProblemInstance
+# 	problemInstance = ProblemInstance(data_path, 1000)
+# 	currentTime = problemInstance.startTime+60
+# 	orders, drivers = problemInstance.batch(currentTime)
+# 	T = cost_saving(orders)
+# 	prefs = {}
+# 	for i in T.keys():
+# 		li = []
+# 		for j in T[i]:
+# 			prefs.setdefault(i,li).append(j.match_id)
+#
+# 	# execute the match!!
+# 	A = execute(prefs)
 

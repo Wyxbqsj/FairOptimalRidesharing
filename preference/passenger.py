@@ -15,11 +15,11 @@ class Passenger:
     ppl = {}
 
     # somebody is going to propose!!
-    def propose_to(self, somebody):
-        somebody.receive_proposal_from(self)
+    def propose(self, somebody):
+        somebody.receive(self)
 
     # when somebody receives a proposal in phase 1
-    def receive_proposal_from(self, somebody):
+    def receive(self, somebody):
         current_prefs = self.current_prefs
 
         # need to cross off those behind current proposal
@@ -37,7 +37,7 @@ class Passenger:
 
         # initiate a new proposal
         if len(passenger.current_prefs) > 0:
-            passenger.propose_to(passenger.current_prefs[0])
+            passenger.propose(passenger.current_prefs[0])
 
 
     # find a passenger who still has a second column

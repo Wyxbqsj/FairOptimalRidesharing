@@ -61,6 +61,8 @@ if __name__ == '__main__':
     problemInstance = ProblemInstance(data_path, 1000)
     currentTime = problemInstance.startTime+60
     orders, drivers = problemInstance.batch(currentTime)
+    # import pdb
+    # pdb.set_trace()
     cost_saving(orders)
 
     # orders = []
