@@ -5,8 +5,7 @@ import time
 import os
 import pickle
 np.random.seed(seed)
-# drc2
-# gai yi dian
+
 class ProblemInstance:
     def __init__(self, orderPath, driverCount):
         # load orders
@@ -47,6 +46,9 @@ class ProblemInstance:
                 orders.append(single_order)
             single_order = next(ords)
         drivers = list(filter(lambda x: x.relaxTime < currentTimestamp, self.drivers))
+        # curIdMap = [None for x in range(len(orders))]
+        # for i in range(len(orders)):
+        #     curIdMap[i] = orders[i].id
         return orders, drivers
 
 if __name__ == '__main__':

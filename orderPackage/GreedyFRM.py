@@ -44,5 +44,5 @@ if __name__ == '__main__':
     from datadeal.problem import ProblemInstance
     problemInstance = ProblemInstance(data_path, 1000)
     currentTime = problemInstance.startTime+60
-    orders, drivers = problemInstance.batch(currentTime)
-    GFRM(orders)
+    orders, drivers, mapId = problemInstance.batch(currentTime)
+    print(GFRM(orders))

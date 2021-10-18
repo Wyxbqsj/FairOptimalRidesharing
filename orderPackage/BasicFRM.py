@@ -1,4 +1,4 @@
-
+from preference.preferenceTable import preTable
 from datadeal.orderAndDriver import Order
 from preference.costSaving import cost_saving
 from setting import *
@@ -37,18 +37,24 @@ def execute(prefs, recursion_limit=10000):
 
 	return Passenger.prefsMatrix('current')
 
-# if __name__ == '__main__':
-# 	from datadeal.problem import ProblemInstance
-# 	problemInstance = ProblemInstance(data_path, 1000)
-# 	currentTime = problemInstance.startTime+60
-# 	orders, drivers = problemInstance.batch(currentTime)
-# 	T = cost_saving(orders)
-# 	prefs = {}
-# 	for i in T.keys():
-# 		li = []
-# 		for j in T[i]:
-# 			prefs.setdefault(i,li).append(j.match_id)
-#
-# 	# execute the match!!
-# 	A = execute(prefs)
+if __name__ == '__main__':
+	# from datadeal.problem import ProblemInstance
+	# problemInstance = ProblemInstance(data_path, 1000)
+	# currentTime = problemInstance.startTime+60
+	# orders, drivers = problemInstance.batch(currentTime)
+	# T = cost_saving(orders)
+	# prefs = {}
+	# for i in T.keys():
+	# 	li = []
+	# 	for j in T[i]:
+	# 		prefs.setdefault(i,li).append(j.match_id)
+	from datadeal.problem import ProblemInstance
+
+	problemInstance = ProblemInstance(data_path, 1000)
+	currentTime = problemInstance.startTime + 60
+	orders, drivers = problemInstance.batch(currentTime)
+	prefs = preTable(orders)
+
+	# execute the match!!
+	A = execute(prefs)
 

@@ -1,16 +1,18 @@
 from datadeal.orderAndDriver import Order
 from preference.costSaving import cost_saving
+from preference.preferenceTable import preTable
 from setting import *
 import sys
 from preference.passenger import Passenger
 
 
 def getRanking(preference):
-    length=max(preference)+1
-    rank = [[None for j in range(length)] for i in range(length)]
+    rank = [[None for j in range(len(preference))] for i in range(len(preference))]
 
     for i in preference.keys():
         for j in range(len(preference[i])):
+            # import pdb
+            # pdb.set_trace()
             rank[i][preference[i][j]] = j
     # for i in range(len(rank)):
     #     while None in rank[i]:
@@ -20,22 +22,23 @@ def getRanking(preference):
 
 
 def stable_roommates_phase_1(preference, rank):
-    length = max(preference)+1
-    proposal = [None for x in range(length)]
-    first = [0 for x in range(length)]  # the first element's index of each list
-    last = [0 for x in range(length)]
-    for x in preference.keys():
-        last[x] = len(preference[x])  # the last element's index of each list
-    free = [x for x in range(length)]
+    proposal = [None for x in range(len(preference))]
+    first = [0 for x in range(len(preference))]  # the first element's index of each list
+    last = [len(x) for x in preference.values()]  # the last element's index of each list
+    free = [x for x in range(len(preference))]
 
     while len(free) > 0:
         i = free[0]
 
         # update first pointer if necessary
-        while preference[i][first[i]] == None:
-            first[i] = first[i] + 1
+        try:
+            while preference[i][first[i]] == None:
+                first[i] = first[i] + 1
+        except:
+            import pdb
+            pdb.set_trace()
 
-        top_pick = preference[i][first[i]]
+        top_pick = preference[i][first[i]] #i的list上排名第一的人的id
 
         # top pick hasn't been proposed to yet, so they accept
         if proposal[top_pick] == None:
@@ -45,10 +48,15 @@ def stable_roommates_phase_1(preference, rank):
 
             # all candidates worse than i are rejected, must remove top_pick from their preference list
             for x in range(match_rank + 1, last[top_pick]):
-                # import pdb
-                # pdb.set_trace()
-                reject = preference[top_pick][x]
-                preference[reject][rank[reject][top_pick]] = None
+                try:
+                    reject = preference[top_pick][x]
+                    if reject==None:
+                        continue
+                    preference[reject][rank[reject][top_pick]] = None
+
+                except:
+                    import pdb
+                    pdb.set_trace()
 
                 # update last pointer
             last[top_pick] = match_rank  # delete all sucessors of i on top_pick's list, so its length should change
@@ -171,19 +179,19 @@ def match_roommates(preferences):
     return matches
 
 if __name__ == '__main__':
-	from datadeal.problem import ProblemInstance
-	problemInstance = ProblemInstance(data_path, 1000)
-	currentTime = problemInstance.startTime+60
-	orders, drivers = problemInstance.batch(currentTime)
-	T = cost_saving(orders)
-	prefs = {}
-	for i in T.keys():
-		li = []
-		for j in T[i]:
-			prefs.setdefault(i,li).append(j.match_id)
+    from datadeal.problem import ProblemInstance
+    problemInstance = ProblemInstance(data_path, 1000)
+    currentTime = problemInstance.startTime+60
+    # orders, drivers = problemInstance.batch(currentTime)
+    orders, drivers = problemInstance.batch(currentTime)
+    # for k in range(len(orders)):
+    #     orders[k].id = curIdMap.index(orders[k].id)
+    prefs = preTable(orders)
 
-	# execute the match!!
-	print(match_roommates(prefs))
+
+
+    # execute the match!!
+    print(match_roommates(prefs))
 
 
 

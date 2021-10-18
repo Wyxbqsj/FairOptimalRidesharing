@@ -24,12 +24,20 @@ class myClass:
 
 
 def cost_saving(orders: List[Order]):
+    # curIdMap = [None for x in range(len(orders))]
+    # for i1 in range(len(orders)):
+    #     curIdMap[i1] = orders[i1].id
+    # for k in range(len(orders)):
+    #     orders[k].id = curIdMap.index(orders[k].id)
+    curIdmap=[]
     ptable = {}
     for i in tqdm(range(len(orders))):
         key = orders[i].id
         plist = []
+        isnull = [True for x in range(len(orders))]
         for j in range(len(orders)):
             if i == j:
+                # ptable.setdefault(key, plist).append(myClass(orders[i].id, orders[j].id, 0, 0))
                 continue
             if ManhaPick2Pick(orders[i], orders[j])/orders[i].speed < orders[i].maxWait and ManhaPick2Pick(orders[i],orders[j])/orders[j].speed < orders[j].maxWait:
                 d1 = ManhaPick2Drop(orders[i], orders[i])
@@ -45,12 +53,10 @@ def cost_saving(orders: List[Order]):
                     save_individual = save_total*(orders[i].absluteDistance/d_sum)
 
                 ptable.setdefault(key, plist).append(myClass(orders[i].id, orders[j].id, save_total, save_individual))
-
-    #     if len(plist) == 0:
-    #         print(key)
-    # import pdb
-    # pdb.set_trace()
-    return ptable
+                isnull[i]=False
+        if isnull[i]==False:
+            curIdmap.append(orders[i].id)
+    return ptable, curIdmap
 
 
 
@@ -63,8 +69,10 @@ if __name__ == '__main__':
     orders, drivers = problemInstance.batch(currentTime)
     # import pdb
     # pdb.set_trace()
-    cost_saving(orders)
-
+    t,idlist =cost_saving(orders)
+    print(len(orders),len(idlist),len(t),max(t))
+    for i in t.keys():
+        print(i)
     # orders = []
     # with open(data_path, "r", encoding="utf8") as f:
     #     content = f.readline()
